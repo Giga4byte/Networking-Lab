@@ -1,81 +1,52 @@
-#include <stdio.h> 
-#include <netdb.h> 
-#include <netinet/in.h> 
-#include <stdlib.h> 
-#include <string.h> 
-#include <sys/socket.h> 
-#include <sys/types.h> 
-#include <unistd.h> // read(), write(), close()
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#define PORT 8000
+#define MAX_BUFFER_SIZE 1024
 
-#define PORT 8080 
-
-
-void chat(int connfd) { 
-    char string[50]; 
-    int n, i=1;
-    while (i < 10) { 
-        read(connfd, string, sizeof(string)); // read the message from client and copy it in string
-        printf("  From client: %s\n  To client : ", string); // print string which contains the client contents 
-        bzero(string, 50); 
-        n = 0; 
-        // copy server message in the buffer 
-        while ((string[n++] = getchar()) != '\n'); 
-        // and send that buffer to client 
-        write(connfd, string, sizeof(string)); 
-  
-        // if msg contains "Exit" then server exit and chat ended
-        if (strncmp("exit", string, 4) == 0) { 
-            printf("Server Exit...\n"); 
-            break;
-        } 
-        i++;
-    } 
-} 
-  
-  
-int main() { 
-    int sockfd, connfd, len; 
-    struct sockaddr_in servaddr, cli; 
-  
-    // socket create and verification 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-    if (sockfd == -1) { 
-        printf("socket creation failed...\n"); 
-        exit(0); 
-    } 
+int main() {
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    int opt = 1;
+    int addrlen = sizeof(address);
+    char buffer[MAX_BUFFER_SIZE] = {0};
+    char *response = "Hello from server!";
     
-    bzero(&servaddr, sizeof(servaddr)); 
-  
-    // assign IP, PORT 
-    servaddr.sin_family = AF_INET; 
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY); 
-    servaddr.sin_port = htons(PORT); 
-  
-    // Binding newly created socket to given IP and verification 
-    if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) { 
-        printf("Socket bind failed...\n"); 
-        exit(0); 
-    } 
-   
-    // Now server is ready to listen and verification 
-    if ((listen(sockfd, 5)) != 0) { 
-        printf("Listen failed...\n"); 
-        exit(0); 
-    } 
-
-    len = sizeof(cli);   
-    // Accept the data packet from client and verification 
-    connfd = accept(sockfd, (struct sockaddr*)&cli, &len); 
-    if (connfd < 0) { 
-        printf("server accept failed...\n"); 
-        exit(0); 
-    } 
-    else
-        printf("server accept the client...\n"); 
-  
-    // Function for chatting between client and server 
-    chat(connfd); 
-  
-    // After chatting close the socket 
-    close(sockfd); 
+    // Creating socket file descriptor
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+        perror("socket failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Forcefully attaching socket to the port 8000 - optional
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
+    }
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+    
+    // Forcefully attaching socket to the port 8080
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    if (listen(server_fd, 3) < 0) {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
+    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen))< 0) {
+        perror("accept");
+        exit(EXIT_FAILURE);
+    }
+    
+    int valread;
+    valread = read(new_socket, buffer, MAX_BUFFER_SIZE);
+    printf("Client: %s\n", buffer);
+    send(new_socket, response, strlen(response), 0);
+    printf("Hello message sent\n");
+    return 0;
 }
