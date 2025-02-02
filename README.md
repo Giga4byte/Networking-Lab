@@ -7,7 +7,7 @@
   - /etc/sysconfig/network-scripts/ifcfg-eth0
   - /etc/nsswitch.conf
   - /etc/hosts
-##### Study the above commands and identify the suitable command from the above list for the following purposes:
+#### Study the above commands and identify the suitable command from the above list for the following purposes:
 Imagine you as a system administrator of a company A123.
   i) You have multiple network interface cards in your system. You need to provide
   additional configuration for only the first NIC.
@@ -25,7 +25,7 @@ Imagine you as a system administrator of a company A123.
   - Iwconfig
   - Hostname
   - nload
-##### Study the above commands and identify the suitable command from the above list for performing the following:
+#### Study the above commands and identify the suitable command from the above list for performing the following:
   i) Test whether “Google” is up and accessible.
   ii) Send 5 messages of buffer size 1000 bytes to any URL.
   iii) List all UDP Sockets.
