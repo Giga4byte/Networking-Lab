@@ -7,7 +7,7 @@
   - /etc/sysconfig/network-scripts/ifcfg-eth0
   - /etc/nsswitch.conf
   - /etc/hosts
-Study the above commands and identify the suitable command from the above list for the following purposes:
+##### Study the above commands and identify the suitable command from the above list for the following purposes:
 Imagine you as a system administrator of a company A123.
   i) You have multiple network interface cards in your system. You need to provide
   additional configuration for only the first NIC.
