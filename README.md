@@ -15,29 +15,28 @@ Imagine you as a system administrator of a company A123.
   iii) You need to specify routing and host information for the network interfaces
 
 #### b) Familiarise the Linux Networking Commands:
-  ● Ping
-  ● Ifconfig
-  ● Traceroute
-  ● Netstat
-  ● Nslookup
-  ● Route
-  ● Host
-  ● Iwconfig
-  ● Hostname
-  ● nload
+  - Ping
+  - Ifconfig
+  - Traceroute
+  - Netstat
+  - Nslookup
+  - Route
+  - Host
+  - Iwconfig
+  - Hostname
+  - nload
 Study the above commands and identify the suitable command from the above list for performing the following:
-  i) Test whether “Google” is up and accessible
-  ii) Send 5 messages of buffer size 1000 bytes to any URL.
-  iii) List all UDP Sockets.
-  iv) Print the IP address details of the google.com
-  v) Display the hostname of your computer.
+  - Test whether “Google” is up and accessible.
+  - Send 5 messages of buffer size 1000 bytes to any URL.
+  - List all UDP Sockets.
+  - Print the IP address details of the google.com.
+  - Display the hostname of your computer.
 
 ### Day 2. 
 #### Familiarize and understand the use and functioning of system calls used for network programming in Linux.
-
-i) Process management: Write a C program to implement fork, exec, getpid, exit and wait system calls.
-ii)Directory management: Write a C program using opendir, readdir and closedir system calls.
-iii)File Management: Write a C program for copying a file into another using I/O system call.
+  - Process management: Write a C program to implement fork, exec, getpid, exit and wait system calls.
+  - Directory management: Write a C program using opendir, readdir and closedir system calls.
+  - File Management: Write a C program for copying a file into another using I/O system call.
 
 ### Day 3. 
 ### Implement client-server communication using socket programming and TCP as transport layer protocol in C.
@@ -47,8 +46,8 @@ iii)File Management: Write a C program for copying a file into another using I/O
 
 ### Day 5. 
 #### Simulate sliding window flow control protocols
-  i) Implement Stop and Wait ARQ Protocol in C
-  ii) Implement Go back N in C.
+  - Implement Stop and Wait ARQ Protocol in C.
+  - Implement Go back N in C.
 
 ### Day 6. 
 #### Implement Distance Vector Routing protocol in C .
