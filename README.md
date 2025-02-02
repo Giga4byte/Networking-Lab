@@ -1,12 +1,12 @@
 # Networking Lab
 ### Day 1. 
 #### a) Familiarise the basics of network configuration files and networking commands in Linux.
-  ● /etc/init.d/network
-  ● /etc/sysconfig/network
-  ● /etc/sysconfig/network-scripts
-  ● /etc/sysconfig/network-scripts/ifcfg-eth0
-  ● /etc/nsswitch.conf
-  ● /etc/hosts
+  - /etc/init.d/network
+  - /etc/sysconfig/network
+  - /etc/sysconfig/network-scripts
+  - /etc/sysconfig/network-scripts/ifcfg-eth0
+  - /etc/nsswitch.conf
+  - /etc/hosts
 Study the above commands and identify the suitable command from the above list for the following purposes:
 Imagine you as a system administrator of a company A123.
   i) You have multiple network interface cards in your system. You need to provide
@@ -25,12 +25,12 @@ Imagine you as a system administrator of a company A123.
   - Iwconfig
   - Hostname
   - nload
-Study the above commands and identify the suitable command from the above list for performing the following:
-  - Test whether “Google” is up and accessible.
-  - Send 5 messages of buffer size 1000 bytes to any URL.
-  - List all UDP Sockets.
-  - Print the IP address details of the google.com.
-  - Display the hostname of your computer.
+##### Study the above commands and identify the suitable command from the above list for performing the following:
+  i) Test whether “Google” is up and accessible.
+  ii) Send 5 messages of buffer size 1000 bytes to any URL.
+  iii) List all UDP Sockets.
+  iv) Print the IP address details of the google.com.
+  v) Display the hostname of your computer.
 
 ### Day 2. 
 #### Familiarize and understand the use and functioning of system calls used for network programming in Linux.
