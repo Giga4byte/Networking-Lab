@@ -1,81 +1,73 @@
+// stop and wait arq - client
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include <time.h>
+#include <arpa/inet.h> 
 
-#define PORT 8000
+#define PORT 8082
 #define SERVER_ADDRESS "127.0.0.1"
-#define MAX_BUFFER_SIZE 1024
-#define TIMEOUT 2 // seconds
+#define MAX_RETRIES 3
 
 int main() {
-    int sock = 0, valread;
-    struct sockaddr_in serv_addr;
-    char *message = "Hello from client!";
-    char buffer[MAX_BUFFER_SIZE] = {0};
-    char *ack = "ACK";
-    
-    // Create socket
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("\nsocket creation error...\n");
-        return -1;
-    }
+	int sock = 0, valread, i=0, retries = 0;
+	struct sockaddr_in serv_addr;
+	char message[1024];
+	char buffer[1024] = {0};
+	
+	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+		printf("\n Socket creation error \n");
+		return -1;
+	}
+	
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(PORT);
+	
+	// Convert IPv4 and IPv6 addresses from text to binary form
+	if (inet_pton(AF_INET, SERVER_ADDRESS, &serv_addr.sin_addr) <= 0) {
+		printf("\nInvalid address/ Address not supported \n");
+		return -1;
+	}
+	
+	if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+		printf("\nConnection Failed \n");
+		return -1;
+	}
+	
+	while (1) {
+		memset(buffer, 0, sizeof(buffer));
+		memset(message, 0, sizeof(message));
 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+		printf("Client: ");
+		fgets(message, sizeof(message), stdin);
+		message[strcspn(message, "\n")] = 0;
 
-    // Convert IPv4 address from text to binary form
-    if (inet_pton(AF_INET, SERVER_ADDRESS, &serv_addr.sin_addr) <= 0) {
-        printf("\nInvalid address/address not supported...\n");
-        return -1;
-    }
+		if (strcmp(message, "exit") == 0) {
+		    printf("Exiting client...\n");
+		    return 0;
+		} 
 
-    // Connect to the server
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        printf("\nConnection failed...\n");
-        return -1;
-    }
+		send(sock, message, strlen(message), 0);
+		printf("....message has been sent....\n");
 
-    // Stop and Wait Protocol
-    while (1) {
-        // Send message to server
-        send(sock, message, strlen(message), 0);
-        printf("Message sent to server\n");
+		int valread = read(sock, buffer, sizeof(buffer) - 1);
+		if (valread > 0) {
+		    buffer[valread] = '\0';
+		    printf("Server: %s\n", buffer);
+		}
+		
+		if (strcmp(buffer, "ACK") == 0) {
+			printf("....message successfully sent....\n");
+		} if (strcmp(buffer, "no ACK") == 0) {
+			if (retries > MAX_RETRIES) {
+				printf ("....giving up...\n");
+			} else {
+				printf("....message needs to be resent...\n");
+				retries++; 
+			}
+		}
+	}
 
-        // Wait for acknowledgment with timeout
-        fd_set readfds;
-        struct timeval timeout;
-        timeout.tv_sec = TIMEOUT;
-        timeout.tv_usec = 0;
-
-        FD_ZERO(&readfds);
-        FD_SET(sock, &readfds);
-
-        int activity = select(sock + 1, &readfds, NULL, NULL, &timeout);
-
-        if (activity == 0) {
-            // Timeout occurred, resend message
-            printf("Timeout occurred, resending message...\n");
-            continue;
-        } else if (activity > 0 && FD_ISSET(sock, &readfds)) {
-            // Read acknowledgment from server
-            valread = read(sock, buffer, MAX_BUFFER_SIZE);
-            if (valread > 0 && strcmp(buffer, ack) == 0) {
-                printf("Acknowledgment received from server\n");
-
-                // Now read the server's response
-                valread = read(sock, buffer, MAX_BUFFER_SIZE);
-                if (valread > 0) {
-                    printf("Server: %s\n", buffer);
-                    break; // Exit the loop after receiving response
-                }
-            }
-        } else {
-            printf("Error in receiving acknowledgment\n");
-        }
-    }
-
-    return 0;
+	return 0;
 }
