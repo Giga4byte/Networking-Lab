@@ -14,8 +14,7 @@ int main() {
 	struct sockaddr_in address;
 	int opt = 1;
 	int addrlen = sizeof(address);
-	char buffer[MAX_BUFFER_SIZE] = {0};
-	char response[MAX_BUFFER_SIZE];
+	char buffer[MAX_BUFFER_SIZE] = {0}, response[MAX_BUFFER_SIZE];
 	
 	// Creating socket file descriptor
 	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
