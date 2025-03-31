@@ -7,6 +7,7 @@
 #define MAX_BUFFER_SIZE 1024
 
 int main() {
+    // initialise server_fd, new_socket, address, opt, addrlen, buffer, response
     int server_fd, new_socket;
     struct sockaddr_in address;
     int opt = 1;
