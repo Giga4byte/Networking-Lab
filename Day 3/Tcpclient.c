@@ -7,10 +7,12 @@
 #define SERVER_ADDRESS "127.0.0.1"
 
 int main() {
+  // initialise sock, valread, serv_addr, message, buffer
   int sock = 0, valread;
   struct sockaddr_in serv_addr;
   char *message = "Hello from client!";
   char buffer[1024] = {0};
+  
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     printf("\nsocket creation error...\n");
     return -1;
