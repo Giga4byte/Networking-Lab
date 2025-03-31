@@ -57,6 +57,27 @@ int main () {
     }
     filename[n] = '\0';
     printf("Requested file: %s\n", filename);
+
+    f = open(filename, O_RDONLY);
+    if (f == -1) {
+      perror("open");
+      write(newserversock, "File not found", 14);
+      close(newserversock);
+      continue;
+    }
+
+    n = read(f, filedata, sizeof(filedata)-1);
+    if (n > 0) {
+      filedata[n] = '\0';
+      printf("File contents: %s\n", filedata);
+      write(newserversock, filedata, n);
+    } else {
+      perror("read");
+    }
+
+    close(f);
+    close(newserversock);
   }
+  close(serversock);
   return 0;
 }
