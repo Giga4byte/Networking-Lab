@@ -59,7 +59,7 @@ int main() {
             if(ack_decision == 1) {
                 printf("\nRecieved packet seqnum %s", buffer);
                 printf("\nServer: Sending ACK.\n");
-                send(client_socket, buffer, BUFFER_SIZE, 0);
+                send(client_socket, buffer, MAX_BUFFER_SIZE, 0);
                 received[packs] = packs;
                 packs++;
             } else {
