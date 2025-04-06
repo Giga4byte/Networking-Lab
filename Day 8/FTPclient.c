@@ -43,8 +43,7 @@ int main() {
     filedata[rdret] = '\0';  
     printf("\nThe contents of the file:\n\n%s\n", filedata); 
   } else { 
-    printf("\nError: Could not read file 
-    from server.\n"); 
+    printf("\nError: Could not read file from server.\n"); 
   } 
   
   close(clientsock); 
