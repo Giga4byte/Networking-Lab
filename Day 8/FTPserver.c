@@ -14,7 +14,7 @@ int main () {
   char filename[100], filedata[300];
   socklen_t clientsize;
 
-  // SOCKET creation
+  // SOCKET creation 
   serversock = socket(AF_INET, SOCK_STREAM, 0);
   if (serversock < 0) {
     perror("socket");
