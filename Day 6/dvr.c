@@ -62,8 +62,7 @@ int main() {
     for (i = 0; i < nodes; i++) {
       printf("\nRouter %d:\n", i);
       printf("Destination\tNext Hop\tDistance\n");
-      for (j = 0; j < nodes; j++)
-      {
+      for (j = 0; j < nodes; j++) {
         if (rt[i].distance[j] == INF) {
           printf("%d\t\t-\t\tINF\n", j);
         } else {
