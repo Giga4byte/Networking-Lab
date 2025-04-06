@@ -17,22 +17,26 @@ int main () {
   struct sockaddr_in server_addr, client_addr;
   socklen_t addr_size;
   char buffer[MAX_BUFFER_SIZE], sender[MAX_BUFFER_SIZE] = "", receiver[MAX_BUFFER_SIZE] = "", body[MAX_BUFFER_SIZE] = "";
-
+  
+// create socket
   server_socket = socket(AF_INET, SOCK_STREAM, 0);
   if (server_socket < 0) {
     printff("error in socket creation...\n");
     return -1;
   }
 
+// configuration settings with server_address
   server_addr.sin_family = AF_INET;
   server_addr.sin_port = htons(PORT);
   server_addr.sin_addr.s_addr = INADDR_ANY;
 
+// bind the port
   if (bind(server_socket, (struct sockaddr *)&server_addr, sizeof(server_address)) < 0) {
     printf("error in binding...\n");
     return -1;
   }
 
+// listening
   if (listen(server_socket, 10) < 0) {
     printf("error in listening...\n");
     return -1;
