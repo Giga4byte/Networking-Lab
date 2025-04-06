@@ -81,14 +81,11 @@ int main () {
                     break;
                 }
                 buffer[bytes_recv] = '\0';
-
                 if(strcmp(buffer, ".\r\n") == 0) {
                     break;
                 }
-
                 strcat(body, buffer);
             } // while inside minor
-
             send_message(client_socket, "message for delivery\r\n");
             printf("MAIL RECEIVED\nFROM: %s\nTO: %s\n BODY: %s\n", sender, receiver, body);
         } else if (strncmp(buffer, "QUIT", 4) == 0) {
